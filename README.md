@@ -1,4 +1,7 @@
-# my-awesome
+<p align="center">
+  <img src="assets/icon.png" width="150" alt="Logo">
+  <h1 align="center">My Awesome Demo Version</h1>
+</p>
 
 A desktop application for visually building and composing UI components on an interactive canvas. Drag components from the sidebar, connect them, preview live HTML/CSS output, and export or generate code.
 
