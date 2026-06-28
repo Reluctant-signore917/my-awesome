@@ -84,7 +84,8 @@ The application has four main sections:
 - typography (10)
 - your saved import
 
----
+<img width="800" height="450" alt="8b813c542c6ce827" src="https://github.com/user-attachments/assets/47eabf00-32e4-4c08-8949-9966d1042f4a" />
+
 
 ## Keyboard Shortcuts
 
