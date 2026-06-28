@@ -146,7 +146,7 @@ The installer will be generated at release/My Awesome Setup 1.0.0.exe.
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
 
-Copyright (c) 2025 Yasser-27
+Copyright (c) 2026 Yasser-27
 
 ## Author
 
