@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {
+      "id": "README.md",
+      "name": "README.md",
+      "x": 60,
+      "y": 60,
+      "preview": "My Awesome"
+    }
+  ],
+  "conns": [],
+  "removed": []
+}

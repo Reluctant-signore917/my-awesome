@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI Component Studio</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#121212;--s1:#121212;--s2:#121212;--s3:#121212;
+  --border:#2a3050;--border2:#3a4570;
+  --text:#c8d0e8;--dim:#6b7599;--muted:#4a5270;
+  --accent:#c8ff00;--accent2:#9fcc00;
+  --blue:#4facfe;--purple:#a78bfa;--pink:#f093fb;
+  --green:#34d399;--orange:#fb923c;--red:#f87171;
+  --r:8px;--r-sm:5px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Header ── */
+header{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:48px;background:var(--s1);border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-icon{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#000}
+.logo-name{font-size:14px;font-weight:700;color:#e8edf8;letter-spacing:-0.02em}
+.header-right{display:flex;align-items:center;gap:8px}
+.hbtn{padding:6px 12px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--s2);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
+.hbtn:hover{background:var(--s3);border-color:var(--border2)}
+.hbtn-accent{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700}
+.hbtn-accent:hover{background:var(--accent2)}
+
+/* ── Main layout ── */
+.app{display:flex;flex:1;overflow:hidden}
+
+/* ── Sidebar (category nav) ── */
+.sidebar{width:180px;background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sidebar-section{padding:12px 10px 6px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;border-radius:var(--r-sm);margin:1px 6px;color:var(--dim);font-size:12px;font-weight:500;transition:all .15s;border:1px solid transparent}
+.nav-item:hover{background:var(--s2);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(200,255,0,.12),rgba(79,172,254,.08));border-color:rgba(200,255,0,.2);color:var(--accent)}
+.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.nav-count{margin-left:auto;font-size:10px;background:var(--s3);border-radius:10px;padding:1px 6px;color:var(--muted)}
+
+/* ── Variants Panel ── */
+.variants-panel{width:180px;background:var(--s1);border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+.vp-header{padding:12px 14px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:#e8edf8;letter-spacing:.05em;text-transform:uppercase}
+.variant-card{margin:8px;border-radius:var(--r);overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .15s;background:var(--s2)}
+.variant-card:hover{border-color:var(--border2)}
+.variant-card.active{border-color:var(--accent)}
+.variant-preview{height:70px;display:flex;align-items:center;justify-content:center;padding:10px}
+.variant-name{padding:6px 10px;font-size:11px;color:var(--dim);border-top:1px solid var(--border)}
+.variant-card.active .variant-name{color:var(--accent)}
+
+/* ── Center: Preview + Controls ── */
+.center{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#121212}
+.preview-area{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;padding:30px}
+.preview-bg-checker{
+  position:absolute;inset:0;
+  background-image:linear-gradient(45deg,#1a1e30 25%,transparent 25%),linear-gradient(-45deg,#1a1e30 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#1a1e30 75%),linear-gradient(-45deg,transparent 75%,#1a1e30 75%);
+  background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;
+}
+.preview-container{position:relative;z-index:1;width:100%;max-width:680px;display:flex;align-items:center;justify-content:center;padding:40px;border-radius:16px;min-height:240px;transition:background .3s}
+#livePreview{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:16px}
+
+/* ── Controls Bar ── */
+.controls-bar{background:var(--s1);border-top:1px solid var(--border);padding:14px 16px;flex-shrink:0}
+.controls-scroll{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.ctrl-group{display:flex;flex-direction:column;gap:5px}
+.ctrl-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.ctrl-row{display:flex;align-items:center;gap:6px}
+input[type="color"]{width:30px;height:26px;border-radius:4px;border:1px solid var(--border);background:var(--s2);cursor:pointer;padding:2px}
+input[type="range"]{width:90px;height:3px;-webkit-appearance:none;background:var(--border);border-radius:2px;cursor:pointer;outline:none}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid #0a0c14}
+input[type="text"],input[type="number"],select{background:var(--s2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:11px;padding:4px 8px;outline:none;font-family:inherit}
+input[type="text"]:focus,input[type="number"]:focus,select:focus{border-color:var(--accent)}
+select{cursor:pointer}
+input[type="number"]{width:55px}
+.range-val{font-size:11px;color:var(--text);min-width:28px;text-align:right;font-family:'SF Mono',monospace}
+.chip-group{display:flex;gap:4px;flex-wrap:wrap}
+.chip{padding:3px 10px;border-radius:20px;font-size:11px;border:1px solid var(--border);background:var(--s2);color:var(--dim);cursor:pointer;transition:all .15s;white-space:nowrap}
+.chip:hover{border-color:var(--border2);color:var(--text)}
+.chip.active{background:rgba(200,255,0,.15);border-color:var(--accent);color:var(--accent)}
+
+/* ── Right: Code Panel ── */
+.code-panel{width:220px;background:var(--s1);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.cp-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.cp-title{font-size:11px;font-weight:700;color:#e8edf8;text-transform:uppercase;letter-spacing:.06em}
+.code-tabs{display:flex;gap:0;margin-bottom:-1px}
+.code-tab{padding:6px 12px;font-size:11px;cursor:pointer;border-bottom:2px solid transparent;color:var(--dim);transition:all .15s}
+.code-tab.active{color:var(--accent);border-color:var(--accent)}
+pre{flex:1;overflow:auto;padding:14px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;line-height:1.7;color:#7a90c0;white-space:pre-wrap;word-break:break-all}
+.cp-footer{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0}
+.cp-btn{flex:1;padding:8px;border-radius:var(--r-sm);border:none;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.cp-btn:hover{opacity:.85}
+.cp-primary{background:var(--accent);color:#000}
+.cp-secondary{background:var(--s2);border:1px solid var(--border);color:var(--text);font-weight:500}
+
+/* Toast */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s2);border:1px solid var(--border2);color:var(--text);font-size:12px;padding:8px 16px;border-radius:var(--r);opacity:0;transition:all .2s;pointer-events:none;z-index:999}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">U</div>
+    <span class="logo-name">UI Studio</span>
+  </div>
+  <div class="header-right">
+    <button class="hbtn" onclick="copyCode()">⬡ Copy</button>
+    <button class="hbtn-accent hbtn" onclick="sendToCanvas()">⬡ Send to Canvas</button>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-section">Components</div>
+    <div class="nav-item active" onclick="setCategory('button',this)">
+      <span class="nav-icon">⬛</span> Button <span class="nav-count">8</span>
+    </div>
+    <div class="nav-item" onclick="setCategory('background',this)">
+      <span class="nav-icon">◼</span> Background <span class="nav-count">6</span>
+    </div>
+    <div class="nav-item" onclick="setCategory('card',this)">
+      <span class="nav-icon">▭</span> Card <span class="nav-count">7</span>
+    </div>
+    <div class="nav-item" onclick="setCategory('input',this)">
+      <span class="nav-icon">▱</span> Input <span class="nav-count">5</span>
+    </div>
+    <div class="nav-item" onclick="setCategory('bar',this)">
+      <span class="nav-icon">▬</span> Bars <span class="nav-count">5</span>
+    </div>
+    <div class="nav-item" onclick="setCategory('grid',this)">
+      <span class="nav-icon">⊞</span> Grid <span class="nav-count">4</span>
+    </div>
+    <div class="nav-item" onclick="setCategory('layout',this)">
+      <span class="nav-icon">⊟</span> Layout <span class="nav-count">5</span>
+    </div>
+    <div class="nav-item" onclick="setCategory('glass',this)">
+      <span class="nav-icon">◇</span> Glass <span class="nav-count">5</span>
+    </div>
+    <div class="nav-item" onclick="setCategory('media',this)">
+      <span class="nav-icon">▶</span> Media <span class="nav-count">4</span>
+    </div>
+  </div>
+
+  <!-- Variants -->
+  <div class="variants-panel">
+    <div class="vp-header" id="vpHeader">Button Variants</div>
+    <div id="variantsList"></div>
+  </div>
+
+  <!-- Center -->
+  <div class="center">
+    <div class="preview-area">
+      <div class="preview-bg-checker"></div>
+      <div class="preview-container" id="previewContainer">
+        <div id="livePreview"></div>
+      </div>
+    </div>
+    <div class="controls-bar">
+      <div class="controls-scroll" id="controlsBar"></div>
+    </div>
+  </div>
+
+  <!-- Code Panel -->
+  <div class="code-panel">
+    <div class="cp-header">
+      <span class="cp-title">Code</span>
+      <div class="code-tabs">
+        <div class="code-tab active" onclick="setCodeTab('html',this)">HTML</div>
+        <div class="code-tab" onclick="setCodeTab('css',this)">CSS</div>
+      </div>
+    </div>
+    <pre id="codeOutput"></pre>
+    <div class="cp-footer">
+      <button class="cp-btn cp-primary" onclick="sendToCanvas()">Send to Canvas</button>
+      <button class="cp-btn cp-secondary" onclick="copyCode()">Copy</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let currentCategory = 'button';
+let currentVariant = 0;
+let codeTab = 'html';
+let props = {};
+
+// ═══════════════════════════════════════════════════
+// COMPONENT DEFINITIONS
+// ═══════════════════════════════════════════════════
+const COMPONENTS = {
+
+  button: {
+    label: 'Button Variants',
+    variants: [
+      { name: 'Solid', defaults: { label:'Click me', bg:'#4facfe', color:'#ffffff', radius:8, px:24, py:10, fontSize:14, fontWeight:'600', border:'none', shadow:'none', width:'auto' } },
+      { name: 'Outline', defaults: { label:'Click me', bg:'transparent', color:'#4facfe', radius:8, px:24, py:10, fontSize:14, fontWeight:'600', border:'2px solid #4facfe', shadow:'none', width:'auto' } },
+      { name: 'Ghost', defaults: { label:'Click me', bg:'rgba(79,172,254,0.1)', color:'#4facfe', radius:8, px:24, py:10, fontSize:14, fontWeight:'600', border:'none', shadow:'none', width:'auto' } },
+      { name: 'Gradient', defaults: { label:'Click me', bg:'linear-gradient(135deg,#667eea,#764ba2)', color:'#ffffff', radius:8, px:24, py:10, fontSize:14, fontWeight:'700', border:'none', shadow:'0 8px 25px rgba(102,126,234,0.5)', width:'auto' } },
+      { name: 'Neon', defaults: { label:'Click me', bg:'transparent', color:'#c8ff00', radius:8, px:24, py:10, fontSize:14, fontWeight:'700', border:'2px solid #c8ff00', shadow:'0 0 20px rgba(200,255,0,0.4),inset 0 0 20px rgba(200,255,0,0.05)', width:'auto' } },
+      { name: 'Pill', defaults: { label:'Click me', bg:'#f093fb', color:'#ffffff', radius:50, px:28, py:10, fontSize:14, fontWeight:'600', border:'none', shadow:'0 4px 15px rgba(240,147,251,0.4)', width:'auto' } },
+      { name: 'Dark', defaults: { label:'Click me', bg:'#121212', color:'#c8d0e8', radius:8, px:24, py:10, fontSize:14, fontWeight:'600', border:'1px solid #2a3050', shadow:'none', width:'auto' } },
+      { name: 'Full Width', defaults: { label:'Click me', bg:'#34d399', color:'#000000', radius:8, px:24, py:12, fontSize:14, fontWeight:'700', border:'none', shadow:'0 4px 15px rgba(52,211,153,0.3)', width:'100%' } },
+    ],
+    controls: (p) => `
+      <div class="ctrl-group"><div class="ctrl-label">Label</div><input type="text" value="${p.label}" oninput="setProp('label',this.value)" style="width:110px"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Background</div><input type="color" value="${p.bg.startsWith('#')?p.bg:'#4facfe'}" oninput="setProp('bg',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Text Color</div><input type="color" value="${p.color}" oninput="setProp('color',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Border Radius</div><div class="ctrl-row"><input type="range" min="0" max="50" value="${p.radius}" oninput="setProp('radius',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.radius}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Padding X</div><div class="ctrl-row"><input type="range" min="8" max="60" value="${p.px}" oninput="setProp('px',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.px}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Padding Y</div><div class="ctrl-row"><input type="range" min="4" max="30" value="${p.py}" oninput="setProp('py',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.py}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Font Size</div><div class="ctrl-row"><input type="range" min="10" max="22" value="${p.fontSize}" oninput="setProp('fontSize',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.fontSize}px</span></div></div>
+    `,
+    render: (p) => `<button style="label:${p.label};background:${p.bg};color:${p.color};border-radius:${p.radius}px;padding:${p.py}px ${p.px}px;font-size:${p.fontSize}px;font-weight:${p.fontWeight};border:${p.border};box-shadow:${p.shadow};cursor:pointer;font-family:inherit;width:${p.width};transition:all .2s;outline:none">${p.label}</button>`,
+    html: (p) => `<button class="btn">${p.label}</button>`,
+    css: (p) => `.btn {\n  background: ${p.bg};\n  color: ${p.color};\n  border-radius: ${p.radius}px;\n  padding: ${p.py}px ${p.px}px;\n  font-size: ${p.fontSize}px;\n  font-weight: ${p.fontWeight};\n  border: ${p.border};\n  box-shadow: ${p.shadow};\n  cursor: pointer;\n  transition: all 0.2s;\n  font-family: inherit;\n  width: ${p.width};\n}`
+  },
+
+  background: {
+    label: 'Background Variants',
+    variants: [
+      { name: 'Solid Dark', defaults: { bg:'#121212', width:320, height:200 } },
+      { name: 'Gradient', defaults: { bg:'linear-gradient(135deg,#667eea 0%,#764ba2 100%)', width:320, height:200 } },
+      { name: 'Mesh', defaults: { bg:'radial-gradient(circle at 20% 50%,#667eea 0%,transparent 50%),radial-gradient(circle at 80% 20%,#f093fb 0%,transparent 50%),radial-gradient(circle at 50% 80%,#4facfe 0%,transparent 50%)', bgColor:'#121212', width:320, height:200, blur:0 } },
+      { name: 'Aurora', defaults: { bg:'radial-gradient(ellipse at top,#1a1a2e 0%,transparent 50%),radial-gradient(ellipse at bottom,#16213e 0%,transparent 50%)', bgColor:'#0f3460', width:320, height:200, blur:0 } },
+      { name: 'Noise Texture', defaults: { bg:'#121212', noiseOpacity:0.05, width:320, height:200 } },
+      { name: 'Grid Lines', defaults: { bgColor:'#121212', lineColor:'rgba(255,255,255,0.05)', lineSize:30, width:320, height:200 } },
+    ],
+    controls: (p) => `
+      <div class="ctrl-group"><div class="ctrl-label">Width</div><div class="ctrl-row"><input type="range" min="100" max="500" value="${p.width||320}" oninput="setProp('width',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.width||320}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Height</div><div class="ctrl-row"><input type="range" min="80" max="400" value="${p.height||200}" oninput="setProp('height',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.height||200}px</span></div></div>
+      ${p.bgColor!==undefined?`<div class="ctrl-group"><div class="ctrl-label">Base Color</div><input type="color" value="${p.bgColor||'#121212'}" oninput="setProp('bgColor',this.value)"></div>`:''}
+    `,
+    render: (p,vi) => {
+      if(vi===5) return `<div style="width:${p.width}px;height:${p.height}px;border-radius:12px;background-color:${p.bgColor||'#121212'};background-image:linear-gradient(${p.lineColor||'rgba(255,255,255,0.05)'} 1px,transparent 1px),linear-gradient(90deg,${p.lineColor||'rgba(255,255,255,0.05)'} 1px,transparent 1px);background-size:${p.lineSize||30}px ${p.lineSize||30}px;overflow:hidden"></div>`;
+      if(vi===2||vi===3) return `<div style="width:${p.width}px;height:${p.height}px;border-radius:12px;background-color:${p.bgColor||'#121212'};background-image:${p.bg};filter:${p.blur?'blur('+p.blur+'px)':'none'};overflow:hidden"></div>`;
+      return `<div style="width:${p.width}px;height:${p.height}px;border-radius:12px;background:${p.bg||p.bgColor||'#121212'};overflow:hidden"></div>`;
+    },
+    html: (p,vi) => `<div class="bg-element"></div>`,
+    css: (p,vi) => {
+      if(vi===2||vi===3) return `.bg-element {\n  width: ${p.width}px;\n  height: ${p.height}px;\n  border-radius: 12px;\n  background-color: ${p.bgColor||'#121212'};\n  background-image: ${p.bg};\n}`;
+      if(vi===5) return `.bg-element {\n  width: ${p.width}px;\n  height: ${p.height}px;\n  border-radius: 12px;\n  background-color: ${p.bgColor||'#121212'};\n  background-image: linear-gradient(${p.lineColor} 1px, transparent 1px), linear-gradient(90deg, ${p.lineColor} 1px, transparent 1px);\n  background-size: ${p.lineSize}px ${p.lineSize}px;\n}`;
+      return `.bg-element {\n  width: ${p.width}px;\n  height: ${p.height}px;\n  border-radius: 12px;\n  background: ${p.bg};\n}`;
+    }
+  },
+
+  card: {
+    label: 'Card Variants',
+    variants: [
+      { name: 'Simple', defaults: { title:'Card Title', desc:'A clean minimal card with subtle border.', bg:'#121212', border:'1px solid #2a3050', radius:12, shadow:'none', pad:20 } },
+      { name: 'Elevated', defaults: { title:'Elevated Card', desc:'Lifted with soft shadow for depth.', bg:'#121212', border:'none', radius:12, shadow:'0 20px 40px rgba(0,0,0,0.4)', pad:20 } },
+      { name: 'Gradient Border', defaults: { title:'Gradient Card', desc:'Eye-catching gradient border effect.', bg:'#121212', border:'none', radius:12, shadow:'none', pad:20, gradBorder:true } },
+      { name: 'Spotlight', defaults: { title:'Spotlight Card', desc:'Interactive glow follows the cursor.', bg:'#121212', border:'1px solid #2a3050', radius:12, shadow:'none', pad:20, spotlight:true } },
+      { name: 'Stat Card', defaults: { title:'Total Revenue', desc:'$48,295', bg:'#121212', border:'1px solid #2a3050', radius:12, shadow:'none', pad:20, stat:true, badge:'+12%', badgeColor:'#34d399' } },
+      { name: 'Profile', defaults: { title:'Alex Morgan', desc:'Senior Designer', bg:'#121212', border:'1px solid #2a3050', radius:12, shadow:'none', pad:24, profile:true, avatar:'AM', avatarBg:'#4facfe' } },
+      { name: 'Feature', defaults: { title:'Lightning Fast', desc:'Built for performance at every scale.', bg:'#121212', border:'1px solid #2a3050', radius:16, shadow:'none', pad:24, icon:'⚡', iconBg:'rgba(79,172,254,0.15)', iconColor:'#4facfe' } },
+    ],
+    controls: (p) => `
+      <div class="ctrl-group"><div class="ctrl-label">Title</div><input type="text" value="${p.title}" oninput="setProp('title',this.value)" style="width:110px"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Description</div><input type="text" value="${p.desc}" oninput="setProp('desc',this.value)" style="width:160px"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Background</div><input type="color" value="${p.bg}" oninput="setProp('bg',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Radius</div><div class="ctrl-row"><input type="range" min="0" max="30" value="${p.radius}" oninput="setProp('radius',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.radius}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Padding</div><div class="ctrl-row"><input type="range" min="10" max="40" value="${p.pad}" oninput="setProp('pad',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.pad}px</span></div></div>
+    `,
+    render: (p,vi) => {
+      if(vi===2) return `<div style="background:linear-gradient(135deg,#667eea,#f093fb);padding:2px;border-radius:${p.radius+2}px;width:280px"><div style="background:${p.bg};border-radius:${p.radius}px;padding:${p.pad}px"><p style="font-weight:700;color:#e8edf8;margin-bottom:8px">${p.title}</p><p style="color:#6b7599;font-size:13px;line-height:1.5">${p.desc}</p></div></div>`;
+      if(vi===4) return `<div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;padding:${p.pad}px;width:220px"><p style="font-size:12px;color:#6b7599;margin-bottom:6px">${p.title}</p><p style="font-size:28px;font-weight:800;color:#e8edf8;margin-bottom:10px">${p.desc}</p><span style="background:rgba(52,211,153,0.15);color:${p.badgeColor};font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px">${p.badge}</span></div>`;
+      if(vi===5) return `<div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;padding:${p.pad}px;width:240px;display:flex;align-items:center;gap:14px"><div style="width:48px;height:48px;border-radius:50%;background:${p.avatarBg};display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:16px;flex-shrink:0">${p.avatar}</div><div><p style="font-weight:700;color:#e8edf8;margin-bottom:3px">${p.title}</p><p style="color:#6b7599;font-size:12px">${p.desc}</p></div></div>`;
+      if(vi===6) return `<div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;padding:${p.pad}px;width:250px"><div style="width:42px;height:42px;border-radius:10px;background:${p.iconBg};display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px">${p.icon}</div><p style="font-weight:700;color:#e8edf8;margin-bottom:8px">${p.title}</p><p style="color:#6b7599;font-size:13px;line-height:1.5">${p.desc}</p></div>`;
+      return `<div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;padding:${p.pad}px;box-shadow:${p.shadow};width:260px"><p style="font-weight:700;color:#e8edf8;margin-bottom:8px">${p.title}</p><p style="color:#6b7599;font-size:13px;line-height:1.5">${p.desc}</p></div>`;
+    },
+    html:(p,vi)=>`<div class="card">\n  <h3>${p.title}</h3>\n  <p>${p.desc}</p>\n</div>`,
+    css:(p,vi)=>`.card {\n  background: ${p.bg};\n  border: ${p.border};\n  border-radius: ${p.radius}px;\n  padding: ${p.pad}px;\n  box-shadow: ${p.shadow};\n}`
+  },
+
+  input: {
+    label: 'Input Variants',
+    variants: [
+      { name: 'Simple', defaults: { placeholder:'Type here...', bg:'#121212', border:'1px solid #2a3050', radius:8, color:'#c8d0e8', focus:'#4facfe', fontSize:14, pad:12 } },
+      { name: 'Underline', defaults: { placeholder:'Type here...', bg:'transparent', border:'none', borderBottom:'2px solid #4facfe', radius:0, color:'#c8d0e8', focus:'#4facfe', fontSize:14, pad:10 } },
+      { name: 'Search Bar', defaults: { placeholder:'🔍  Search...', bg:'#121212', border:'1px solid #2a3050', radius:50, color:'#c8d0e8', focus:'#4facfe', fontSize:14, pad:14 } },
+      { name: 'Chat Input', defaults: { placeholder:'Send a message...', bg:'#121212', border:'1px solid #2a3050', radius:12, color:'#c8d0e8', focus:'#4facfe', fontSize:14, pad:12, hasBtn:true, btnColor:'#4facfe' } },
+      { name: 'Floating Label', defaults: { placeholder:'Email Address', bg:'#121212', border:'1px solid #2a3050', radius:8, color:'#c8d0e8', focus:'#4facfe', fontSize:14, pad:12, floating:true } },
+    ],
+    controls: (p) => `
+      <div class="ctrl-group"><div class="ctrl-label">Placeholder</div><input type="text" value="${p.placeholder}" oninput="setProp('placeholder',this.value)" style="width:150px"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Background</div><input type="color" value="${p.bg==='transparent'?'#121212':p.bg}" oninput="setProp('bg',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Accent Color</div><input type="color" value="${p.focus}" oninput="setProp('focus',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Radius</div><div class="ctrl-row"><input type="range" min="0" max="50" value="${p.radius}" oninput="setProp('radius',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.radius}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Font Size</div><div class="ctrl-row"><input type="range" min="11" max="20" value="${p.fontSize}" oninput="setProp('fontSize',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.fontSize}px</span></div></div>
+    `,
+    render: (p,vi) => {
+      const inputStyle = `background:${p.bg};border:${vi===1?'none':p.border};${vi===1?'border-bottom:'+p.borderBottom+';':''} border-radius:${p.radius}px;color:${p.color};font-size:${p.fontSize}px;padding:${p.pad}px ${p.pad+4}px;outline:none;font-family:inherit;width:280px`;
+      if(p.hasBtn) return `<div style="display:flex;align-items:center;gap:8px;width:300px"><input style="${inputStyle};flex:1;width:auto" placeholder="${p.placeholder}"><button style="background:${p.btnColor};color:#fff;border:none;border-radius:${p.radius}px;padding:${p.pad}px 16px;cursor:pointer;font-size:${p.fontSize}px;white-space:nowrap;font-family:inherit">Send ➤</button></div>`;
+      if(p.floating) return `<div style="position:relative;width:280px"><input style="${inputStyle}" placeholder=" "><label style="position:absolute;left:${p.pad+4}px;top:50%;transform:translateY(-50%);color:#6b7599;font-size:${p.fontSize}px;pointer-events:none;transition:.2s">${p.placeholder}</label></div>`;
+      return `<input style="${inputStyle}" placeholder="${p.placeholder}">`;
+    },
+    html:(p,vi)=>{
+      if(p.hasBtn) return `<div class="input-wrap">\n  <input class="input" placeholder="${p.placeholder}">\n  <button class="send-btn">Send</button>\n</div>`;
+      return `<input class="input" placeholder="${p.placeholder}">`;
+    },
+    css:(p,vi)=>`.input {\n  background: ${p.bg};\n  border: ${vi===1?'none':p.border};\n  border-radius: ${p.radius}px;\n  color: ${p.color};\n  font-size: ${p.fontSize}px;\n  padding: ${p.pad}px ${p.pad+4}px;\n  outline: none;\n  width: 100%;\n}\n.input:focus {\n  border-color: ${p.focus};\n}`
+  },
+
+  bar: {
+    label: 'Bar Variants',
+    variants: [
+      { name: 'Progress', defaults: { value:65, bg:'#121212', fill:'#4facfe', radius:50, height:10, label:true, width:280 } },
+      { name: 'Multi-step', defaults: { steps:5, current:3, bg:'#121212', fill:'#4facfe', radius:50, height:8, width:280 } },
+      { name: 'Gradient Bar', defaults: { value:75, bg:'#121212', fill:'linear-gradient(90deg,#667eea,#f093fb)', radius:50, height:12, label:true, width:280 } },
+      { name: 'Skill Bars', defaults: { items:[{l:'React',v:90},{l:'CSS',v:75},{l:'Python',v:60}], fill:'#4facfe', bg:'#121212', radius:4, height:8, width:280 } },
+      { name: 'Loading', defaults: { fill:'#4facfe', bg:'#121212', radius:50, height:6, width:280, animate:true } },
+    ],
+    controls: (p) => `
+      ${p.value!==undefined?`<div class="ctrl-group"><div class="ctrl-label">Value</div><div class="ctrl-row"><input type="range" min="0" max="100" value="${p.value}" oninput="setProp('value',+this.value);this.nextElementSibling.textContent=this.value+'%'"><span class="range-val">${p.value}%</span></div></div>`:''}
+      <div class="ctrl-group"><div class="ctrl-label">Fill Color</div><input type="color" value="${p.fill.startsWith('#')?p.fill:'#4facfe'}" oninput="setProp('fill',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Track Color</div><input type="color" value="${p.bg}" oninput="setProp('bg',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Height</div><div class="ctrl-row"><input type="range" min="4" max="30" value="${p.height}" oninput="setProp('height',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.height}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Width</div><div class="ctrl-row"><input type="range" min="150" max="400" value="${p.width}" oninput="setProp('width',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.width}px</span></div></div>
+    `,
+    render: (p,vi) => {
+      if(vi===0||vi===2) return `<div style="width:${p.width}px"><div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;color:#6b7599">${p.label?`<span>Progress</span><span>${p.value}%</span>`:''}</div><div style="background:${p.bg};border-radius:${p.radius}px;height:${p.height}px;overflow:hidden"><div style="width:${p.value}%;height:100%;background:${p.fill};border-radius:${p.radius}px;transition:width .4s"></div></div></div>`;
+      if(vi===1) return `<div style="width:${p.width}px"><div style="display:flex;gap:4px">${Array.from({length:p.steps},(_, i)=>`<div style="flex:1;height:${p.height}px;border-radius:${p.radius}px;background:${i<p.current?p.fill:p.bg}"></div>`).join('')}</div></div>`;
+      if(vi===3) return `<div style="width:${p.width}px;display:flex;flex-direction:column;gap:10px">${p.items.map(it=>`<div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;color:#c8d0e8"><span>${it.l}</span><span>${it.v}%</span></div><div style="background:${p.bg};border-radius:${p.radius}px;height:${p.height}px"><div style="width:${it.v}%;height:100%;background:${p.fill};border-radius:${p.radius}px"></div></div></div>`).join('')}</div>`;
+      if(vi===4) return `<style>@keyframes loading{0%{left:-60%}100%{left:110%}}</style><div style="width:${p.width}px;background:${p.bg};border-radius:${p.radius}px;height:${p.height}px;overflow:hidden;position:relative"><div style="position:absolute;height:100%;width:60%;background:${p.fill};border-radius:${p.radius}px;animation:loading 1.2s infinite ease-in-out"></div></div>`;
+      return `<div style="width:${p.width}px"><div style="background:${p.bg};border-radius:${p.radius}px;height:${p.height}px;overflow:hidden"><div style="width:${p.value||65}%;height:100%;background:${p.fill}"></div></div></div>`;
+    },
+    html:(p,vi)=>`<div class="bar-track">\n  <div class="bar-fill" style="width: ${p.value||65}%"></div>\n</div>`,
+    css:(p,vi)=>`.bar-track {\n  width: ${p.width}px;\n  height: ${p.height}px;\n  background: ${p.bg};\n  border-radius: ${p.radius}px;\n  overflow: hidden;\n}\n.bar-fill {\n  height: 100%;\n  background: ${p.fill};\n  border-radius: ${p.radius}px;\n  transition: width 0.4s ease;\n}`
+  },
+
+  grid: {
+    label: 'Grid Variants',
+    variants: [
+      { name: 'Basic Grid', defaults: { cols:3, gap:12, items:6, bg:'#121212', border:'1px solid #2a3050', radius:8, height:80, width:300 } },
+      { name: 'Masonry', defaults: { cols:3, gap:8, items:6, bg:'#121212', border:'1px solid #2a3050', radius:8, width:300 } },
+      { name: 'Auto-fit', defaults: { minCol:100, gap:10, items:6, bg:'#4facfe', radius:8, width:300, height:70, opacity:0.15 } },
+      { name: 'Bento', defaults: { bg:'#121212', border:'1px solid #2a3050', gap:10, radius:12, width:300 } },
+    ],
+    controls: (p) => `
+      ${p.cols!==undefined?`<div class="ctrl-group"><div class="ctrl-label">Columns</div><input type="number" min="1" max="6" value="${p.cols}" oninput="setProp('cols',+this.value)" style="width:55px"></div>`:''}
+      <div class="ctrl-group"><div class="ctrl-label">Gap</div><div class="ctrl-row"><input type="range" min="2" max="30" value="${p.gap}" oninput="setProp('gap',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.gap}px</span></div></div>
+      ${p.items!==undefined?`<div class="ctrl-group"><div class="ctrl-label">Items</div><input type="number" min="1" max="12" value="${p.items}" oninput="setProp('items',+this.value)" style="width:55px"></div>`:''}
+      <div class="ctrl-group"><div class="ctrl-label">Item Color</div><input type="color" value="${p.bg.startsWith('#')?p.bg:'#121212'}" oninput="setProp('bg',this.value)"></div>
+      ${p.radius!==undefined?`<div class="ctrl-group"><div class="ctrl-label">Radius</div><div class="ctrl-row"><input type="range" min="0" max="20" value="${p.radius}" oninput="setProp('radius',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.radius}px</span></div></div>`:''}
+    `,
+    render: (p,vi) => {
+      if(vi===0) return `<div style="display:grid;grid-template-columns:repeat(${p.cols},1fr);gap:${p.gap}px;width:${p.width}px">${Array.from({length:p.items},(_,i)=>`<div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;height:${p.height}px;display:flex;align-items:center;justify-content:center;color:#4a5270;font-size:11px">${i+1}</div>`).join('')}</div>`;
+      if(vi===1) return `<div style="columns:${p.cols};gap:${p.gap}px;width:${p.width}px">${Array.from({length:p.items},(_,i)=>`<div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;height:${(i%3+1)*50}px;margin-bottom:${p.gap}px;break-inside:avoid;display:flex;align-items:center;justify-content:center;color:#4a5270;font-size:11px">${i+1}</div>`).join('')}</div>`;
+      if(vi===2) return `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(${p.minCol}px,1fr));gap:${p.gap}px;width:${p.width}px">${Array.from({length:p.items},(_,i)=>`<div style="background:${p.bg};opacity:${0.4+(i*0.1)};border-radius:${p.radius}px;height:${p.height}px"></div>`).join('')}</div>`;
+      if(vi===3) return `<div style="display:grid;grid-template-columns:2fr 1fr;grid-template-rows:auto auto;gap:${p.gap}px;width:${p.width}px"><div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;height:120px;grid-row:1/3;display:flex;align-items:center;justify-content:center;color:#4a5270">Main</div><div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;height:55px;display:flex;align-items:center;justify-content:center;color:#4a5270">A</div><div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;height:55px;display:flex;align-items:center;justify-content:center;color:#4a5270">B</div></div>`;
+      return '';
+    },
+    html:(p,vi)=>`<div class="grid-container">\n${Array.from({length:p.items||4},(_,i)=>`  <div class="grid-item">${i+1}</div>`).join('\n')}\n</div>`,
+    css:(p,vi)=>`.grid-container {\n  display: grid;\n  grid-template-columns: repeat(${p.cols||3}, 1fr);\n  gap: ${p.gap}px;\n}\n.grid-item {\n  background: ${p.bg};\n  border: ${p.border||'1px solid #2a3050'};\n  border-radius: ${p.radius}px;\n  height: ${p.height||80}px;\n}`
+  },
+
+  layout: {
+    label: 'Layout Variants',
+    variants: [
+      { name: 'Sidebar', defaults: { sideW:80, bg:'#121212', sideBg:'#121212', contentBg:'#121212', border:'1px solid #2a3050', width:320, height:200, radius:10 } },
+      { name: 'Header + Main', defaults: { headerH:40, bg:'#121212', headerBg:'#121212', contentBg:'#121212', border:'1px solid #2a3050', width:320, height:200, radius:10 } },
+      { name: 'Cards Row', defaults: { cols:3, gap:10, bg:'#121212', border:'1px solid #2a3050', radius:8, height:90, width:320 } },
+      { name: 'Split', defaults: { ratio:50, bg:'#121212', leftBg:'#121212', rightBg:'#121212', border:'1px solid #2a3050', width:320, height:200, radius:10, gap:8 } },
+      { name: 'Hero Section', defaults: { bg:'linear-gradient(135deg,#121212,#121212)', title:'Hello World', sub:'Build beautiful UIs', btnColor:'#4facfe', width:320, height:200, radius:10 } },
+    ],
+    controls: (p) => `
+      <div class="ctrl-group"><div class="ctrl-label">Width</div><div class="ctrl-row"><input type="range" min="200" max="500" value="${p.width}" oninput="setProp('width',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.width}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Height</div><div class="ctrl-row"><input type="range" min="100" max="350" value="${p.height}" oninput="setProp('height',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.height}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Base Color</div><input type="color" value="${p.bg.startsWith('#')?p.bg:'#121212'}" oninput="setProp('bg',this.value)"></div>
+    `,
+    render: (p,vi) => {
+      if(vi===0) return `<div style="width:${p.width}px;height:${p.height}px;background:${p.bg};border-radius:${p.radius}px;overflow:hidden;display:flex;border:${p.border}"><div style="width:${p.sideW}px;background:${p.sideBg};border-right:${p.border};display:flex;flex-direction:column;align-items:center;padding:10px;gap:8px">${Array.from({length:4},()=>`<div style="width:32px;height:8px;background:#2a3050;border-radius:4px"></div>`).join('')}</div><div style="flex:1;background:${p.contentBg};padding:14px"><div style="height:10px;background:#2a3050;border-radius:4px;margin-bottom:8px;width:60%"></div><div style="height:8px;background:#2a3050;border-radius:4px;width:80%"></div></div></div>`;
+      if(vi===1) return `<div style="width:${p.width}px;height:${p.height}px;background:${p.bg};border-radius:${p.radius}px;overflow:hidden;display:flex;flex-direction:column;border:${p.border}"><div style="height:${p.headerH}px;background:${p.headerBg};border-bottom:${p.border};display:flex;align-items:center;padding:0 14px;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:#4facfe"></div><div style="height:8px;width:80px;background:#2a3050;border-radius:4px"></div></div><div style="flex:1;background:${p.contentBg};padding:14px"><div style="height:10px;background:#2a3050;border-radius:4px;margin-bottom:8px;width:70%"></div><div style="height:8px;background:#2a3050;border-radius:4px;width:50%"></div></div></div>`;
+      if(vi===2) return `<div style="display:grid;grid-template-columns:repeat(${p.cols},1fr);gap:${p.gap}px;width:${p.width}px">${Array.from({length:p.cols},(_,i)=>`<div style="background:${p.bg};border:${p.border};border-radius:${p.radius}px;height:${p.height}px;padding:12px"><div style="height:8px;background:#2a3050;border-radius:4px;margin-bottom:6px;width:70%"></div><div style="height:6px;background:#2a3050;border-radius:4px;width:50%"></div></div>`).join('')}</div>`;
+      if(vi===3) return `<div style="width:${p.width}px;height:${p.height}px;display:grid;grid-template-columns:${p.ratio}% 1fr;gap:${p.gap}px"><div style="background:${p.leftBg};border-radius:${p.radius}px;border:${p.border};padding:14px"><div style="height:10px;background:#2a3050;border-radius:4px;width:70%;margin-bottom:8px"></div><div style="height:8px;background:#2a3050;border-radius:4px;width:50%"></div></div><div style="background:${p.rightBg};border-radius:${p.radius}px;border:${p.border};padding:14px"><div style="height:10px;background:#2a3050;border-radius:4px;width:80%;margin-bottom:8px"></div><div style="height:8px;background:#2a3050;border-radius:4px;width:60%"></div></div></div>`;
+      if(vi===4) return `<div style="width:${p.width}px;height:${p.height}px;background:${p.bg};border-radius:${p.radius}px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center"><p style="font-size:20px;font-weight:800;color:#e8edf8;margin-bottom:6px">${p.title}</p><p style="font-size:13px;color:#6b7599;margin-bottom:14px">${p.sub}</p><button style="background:${p.btnColor};color:#fff;border:none;border-radius:6px;padding:8px 18px;cursor:pointer;font-size:13px;font-weight:600">Get Started</button></div>`;
+      return '';
+    },
+    html:(p,vi)=>`<!-- Layout: ${['Sidebar','Header+Main','Cards Row','Split','Hero'][vi]} -->\n<div class="layout">\n  <div class="content">Content here</div>\n</div>`,
+    css:(p,vi)=>`.layout {\n  width: ${p.width}px;\n  height: ${p.height}px;\n  display: flex;\n  background: ${p.bg.startsWith('#')?p.bg:'#121212'};\n  border-radius: ${p.radius}px;\n  overflow: hidden;\n}`
+  },
+
+  glass: {
+    label: 'Glass Variants',
+    variants: [
+      { name: 'Light Glass', defaults: { bg:'rgba(255,255,255,0.1)', border:'1px solid rgba(255,255,255,0.2)', blur:10, radius:16, pad:24, shadow:'none', width:260, height:160, tint:'#667eea' } },
+      { name: 'Dark Glass', defaults: { bg:'rgba(0,0,0,0.3)', border:'1px solid rgba(255,255,255,0.08)', blur:16, radius:16, pad:24, shadow:'0 8px 32px rgba(0,0,0,0.4)', width:260, height:160, tint:'#4facfe' } },
+      { name: 'Frosted Card', defaults: { bg:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)', blur:20, radius:20, pad:24, shadow:'0 4px 24px rgba(0,0,0,0.3)', width:260, height:160, tint:'#f093fb' } },
+      { name: 'Tinted', defaults: { bg:'rgba(79,172,254,0.12)', border:'1px solid rgba(79,172,254,0.25)', blur:12, radius:16, pad:24, shadow:'none', width:260, height:160, tint:'#4facfe' } },
+      { name: 'Minimal Glass', defaults: { bg:'rgba(255,255,255,0.04)', border:'none', blur:8, radius:12, pad:20, shadow:'none', width:260, height:160, tint:'#34d399' } },
+    ],
+    controls: (p) => `
+      <div class="ctrl-group"><div class="ctrl-label">Tint Color</div><input type="color" value="${p.tint}" oninput="setProp('tint',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Blur</div><div class="ctrl-row"><input type="range" min="0" max="40" value="${p.blur}" oninput="setProp('blur',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.blur}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Opacity</div><div class="ctrl-row"><input type="range" min="1" max="30" value="10" oninput="let v=this.value/100;setProp('bg',\`rgba(255,255,255,\${v})\`);this.nextElementSibling.textContent=this.value+'%'"><span class="range-val">10%</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Radius</div><div class="ctrl-row"><input type="range" min="0" max="30" value="${p.radius}" oninput="setProp('radius',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.radius}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Padding</div><div class="ctrl-row"><input type="range" min="10" max="40" value="${p.pad}" oninput="setProp('pad',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.pad}px</span></div></div>
+    `,
+    render: (p,vi) => {
+      const bgStyle = `background:radial-gradient(circle at 30% 40%,${p.tint}55,transparent 60%),radial-gradient(circle at 80% 70%,${p.tint}33,transparent 50%),#121212`;
+      return `<div style="${bgStyle};padding:40px;border-radius:20px;width:340px;height:240px;display:flex;align-items:center;justify-content:center"><div style="background:${p.bg};border:${p.border};backdrop-filter:blur(${p.blur}px);-webkit-backdrop-filter:blur(${p.blur}px);border-radius:${p.radius}px;padding:${p.pad}px;box-shadow:${p.shadow};width:${p.width}px;height:${p.height}px;display:flex;flex-direction:column;justify-content:center"><p style="font-weight:700;color:#e8edf8;margin-bottom:8px">Glass Card</p><p style="color:rgba(255,255,255,0.5);font-size:13px;line-height:1.5">Backdrop blur effect</p></div></div>`;
+    },
+    html:(p,vi)=>`<div class="glass-card">\n  <h3>Glass Card</h3>\n  <p>Backdrop blur effect</p>\n</div>`,
+    css:(p,vi)=>`.glass-card {\n  background: ${p.bg};\n  border: ${p.border};\n  backdrop-filter: blur(${p.blur}px);\n  -webkit-backdrop-filter: blur(${p.blur}px);\n  border-radius: ${p.radius}px;\n  padding: ${p.pad}px;\n  box-shadow: ${p.shadow};\n}`
+  },
+
+  media: {
+    label: 'Media Variants',
+    variants: [
+      { name: 'Video Player', defaults: { bg:'#000', radius:12, width:300, height:180, accent:'#4facfe', progress:35 } },
+      { name: 'Audio Player', defaults: { bg:'#121212', border:'1px solid #2a3050', radius:12, width:300, accent:'#a78bfa', progress:60 } },
+      { name: 'Image Card', defaults: { bg:'#121212', border:'1px solid #2a3050', radius:12, width:260, accent:'#34d399', label:'Landscape' } },
+      { name: 'Media Thumbnail', defaults: { bg:'#121212', radius:8, width:280, accent:'#f093fb', cols:3, gap:8 } },
+    ],
+    controls: (p) => `
+      <div class="ctrl-group"><div class="ctrl-label">Accent Color</div><input type="color" value="${p.accent}" oninput="setProp('accent',this.value)"></div>
+      <div class="ctrl-group"><div class="ctrl-label">Width</div><div class="ctrl-row"><input type="range" min="160" max="450" value="${p.width}" oninput="setProp('width',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.width}px</span></div></div>
+      <div class="ctrl-group"><div class="ctrl-label">Radius</div><div class="ctrl-row"><input type="range" min="0" max="24" value="${p.radius}" oninput="setProp('radius',+this.value);this.nextElementSibling.textContent=this.value+'px'"><span class="range-val">${p.radius}px</span></div></div>
+      ${p.progress!==undefined?`<div class="ctrl-group"><div class="ctrl-label">Progress</div><div class="ctrl-row"><input type="range" min="0" max="100" value="${p.progress}" oninput="setProp('progress',+this.value);this.nextElementSibling.textContent=this.value+'%'"><span class="range-val">${p.progress}%</span></div></div>`:''}
+    `,
+    render: (p,vi) => {
+      if(vi===0) return `<div style="width:${p.width}px;background:${p.bg};border-radius:${p.radius}px;overflow:hidden"><div style="height:${p.height}px;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;position:relative"><div style="width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer">▶</div><div style="position:absolute;bottom:8px;right:10px;font-size:10px;color:rgba(255,255,255,0.6)">1:24 / 3:45</div></div><div style="padding:10px 12px"><div style="background:#1e1e2e;border-radius:50px;height:4px;margin-bottom:8px;overflow:hidden"><div style="width:${p.progress}%;height:100%;background:${p.accent}"></div></div><div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;gap:12px;font-size:16px;cursor:pointer;color:rgba(255,255,255,0.7)">⏮ ⏸ ⏭</div><div style="font-size:12px;color:rgba(255,255,255,0.4)">🔊</div></div></div></div>`;
+      if(vi===1) return `<div style="width:${p.width}px;background:${p.bg};border:${p.border};border-radius:${p.radius}px;padding:16px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div style="width:42px;height:42px;border-radius:8px;background:linear-gradient(135deg,${p.accent}55,${p.accent}22);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px">🎵</div><div><p style="font-weight:600;color:#e8edf8;font-size:13px;margin-bottom:2px">Track Title</p><p style="color:#6b7599;font-size:11px">Artist Name</p></div></div><div style="background:#121212;border-radius:50px;height:4px;margin-bottom:10px;overflow:hidden"><div style="width:${p.progress}%;height:100%;background:${p.accent}"></div></div><div style="display:flex;align-items:center;justify-content:center;gap:16px;font-size:18px;color:rgba(255,255,255,0.6)"><span style="cursor:pointer">⏮</span><div style="width:36px;height:36px;background:${p.accent};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer">⏸</div><span style="cursor:pointer">⏭</span></div></div>`;
+      if(vi===2) return `<div style="width:${p.width}px;background:${p.bg};border:${p.border};border-radius:${p.radius}px;overflow:hidden"><div style="height:160px;background:linear-gradient(135deg,${p.accent}22,${p.accent}44,${p.accent}22);display:flex;align-items:center;justify-content:center;font-size:40px">🖼</div><div style="padding:12px"><p style="font-weight:600;color:#e8edf8;font-size:13px;margin-bottom:4px">${p.label}</p><div style="display:flex;gap:6px"><span style="background:rgba(52,211,153,0.15);color:${p.accent};font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px">Photo</span></div></div></div>`;
+      if(vi===3) return `<div style="display:grid;grid-template-columns:repeat(${p.cols},1fr);gap:${p.gap}px;width:${p.width}px">${Array.from({length:p.cols*2},(_,i)=>`<div style="background:linear-gradient(135deg,${p.accent}${i%3===0?'33':'22'},${p.accent}${i%3===0?'55':'33'});border-radius:${p.radius}px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:${i===0?'24':'18'}px;${i===0?'grid-column:span 1;':''}cursor:pointer">▶</div>`).join('')}</div>`;
+      return '';
+    },
+    html:(p,vi)=>`<div class="media-player">\n  <!-- Media content here -->\n</div>`,
+    css:(p,vi)=>`.media-player {\n  width: ${p.width}px;\n  background: ${p.bg};\n  border-radius: ${p.radius}px;\n  overflow: hidden;\n}`
+  }
+};
+
+// ═══════════════════════════════════════════════════
+// APP LOGIC
+// ═══════════════════════════════════════════════════
+function setCategory(cat, el) {
+  currentCategory = cat;
+  currentVariant = 0;
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  loadVariants();
+}
+
+function loadVariants() {
+  const comp = COMPONENTS[currentCategory];
+  document.getElementById('vpHeader').textContent = comp.label;
+  const list = document.getElementById('variantsList');
+  list.innerHTML = '';
+  comp.variants.forEach((v, i) => {
+    const card = document.createElement('div');
+    card.className = 'variant-card' + (i === currentVariant ? ' active' : '');
+    card.onclick = () => selectVariant(i);
+    const prev = document.createElement('div');
+    prev.className = 'variant-preview';
+    prev.style.cssText = 'overflow:hidden;position:relative;pointer-events:none;transform:scale(0.55);transform-origin:center;width:180%;margin:-20% -40%';
+    prev.innerHTML = safeRender(comp, v.defaults, i);
+    const name = document.createElement('div');
+    name.className = 'variant-name';
+    name.textContent = v.name;
+    card.appendChild(prev);
+    card.appendChild(name);
+    list.appendChild(card);
+  });
+  selectVariant(0);
+}
+
+function safeRender(comp, p, vi) {
+  try { return comp.render(p, vi); } catch(e) { return '<div style="color:#f87171;font-size:10px">Preview error</div>'; }
+}
+
+function selectVariant(i) {
+  currentVariant = i;
+  const comp = COMPONENTS[currentCategory];
+  props = JSON.parse(JSON.stringify(comp.variants[i].defaults));
+  document.querySelectorAll('.variant-card').forEach((c, idx) => {
+    c.classList.toggle('active', idx === i);
+  });
+  updatePreview();
+  updateControls();
+  updateCode();
+}
+
+function setProp(key, val) {
+  props[key] = val;
+  updatePreview();
+  updateCode();
+}
+
+function updatePreview() {
+  const comp = COMPONENTS[currentCategory];
+  try {
+    document.getElementById('livePreview').innerHTML = comp.render(props, currentVariant);
+  } catch(e) {}
+}
+
+function updateControls() {
+  const comp = COMPONENTS[currentCategory];
+  try {
+    document.getElementById('controlsBar').innerHTML = comp.controls(props);
+  } catch(e) {}
+}
+
+function updateCode() {
+  const comp = COMPONENTS[currentCategory];
+  let out = '';
+  try {
+    if(codeTab === 'html') {
+      out = `<!-- ${comp.variants[currentVariant].name} -->\n${comp.html(props, currentVariant)}`;
+    } else {
+      out = comp.css(props, currentVariant);
+    }
+  } catch(e) { out = '/* Error generating code */'; }
+  document.getElementById('codeOutput').textContent = out;
+}
+
+function setCodeTab(tab, el) {
+  codeTab = tab;
+  document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  updateCode();
+}
+
+function copyCode() {
+  navigator.clipboard.writeText(document.getElementById('codeOutput').textContent).catch(()=>{});
+  showToast('Code copied!');
+}
+
+function sendToCanvas() {
+  const comp = COMPONENTS[currentCategory];
+  const variantName = comp.variants[currentVariant].name;
+  let html, css;
+  try {
+    html = comp.html(props, currentVariant);
+    css = comp.css(props, currentVariant);
+  } catch(e) { html = ''; css = ''; }
+
+  const containerCss = `* { box-sizing: border-box; margin: 0; padding: 0; }
+body { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #121212; font-family: 'Inter', system-ui, sans-serif; padding: 40px; }
+${css}`;
+
+  parent.postMessage({ type: 'tool-output', toolName: 'UI Component Studio', name: `${variantName} - ${currentCategory}`, html, css: containerCss }, '*');
+  showToast('Sent to Canvas!');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(20px)'; }, 2000);
+}
+
+// ── Init ──
+loadVariants();
+</script>
+</body>
+</html>
